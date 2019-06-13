@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">DaggerHomework</string>
+    <string name="select_details">Select details</string>
+
+    <string name="issue_count">Issue count = %1$d</string>
+
+    <string-array name="details_type">
+        <item>User</item>
+        <item>Repo</item>
+    </string-array>
+</resources>
