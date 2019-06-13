@@ -2,17 +2,14 @@ package com.example.daggerhomework.view.repo.details;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoDetailsContract;
-import com.example.daggerhomework.contracts.UserContract;
 import com.example.daggerhomework.model.data.RepoDetailsModel;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
-import com.example.daggerhomework.presenter.UserPresenter;
-import com.example.daggerhomework.view.user.UserDetailsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

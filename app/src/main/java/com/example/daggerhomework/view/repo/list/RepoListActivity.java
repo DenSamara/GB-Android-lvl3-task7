@@ -1,13 +1,12 @@
 package com.example.daggerhomework.view.repo.list;
 
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoListContract;
-import com.example.daggerhomework.model.data.RepoDetailsModel;
 import com.example.daggerhomework.model.data.RepoModel;
 import com.example.daggerhomework.presenter.RepoListPresenter;
 import com.example.daggerhomework.view.repo.details.RepoDetailsActivity;
