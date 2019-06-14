@@ -11,22 +11,14 @@ import com.example.daggerhomework.contracts.RepoDetailsContract;
 import com.example.daggerhomework.model.data.RepoDetailsModel;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class RepoDetailsActivity extends AppCompatActivity implements RepoDetailsContract.View {
 
     private static final String USER_NAME = "extra_user_name";
     private static final String REPO_NAME = "extra_repo_name";
 
-    @BindView(R.id.repo_name)
-    TextView name;
-
-    @BindView(R.id.repo_description)
-    TextView description;
-
-    @BindView(R.id.repo_issue)
-    TextView issue;
+    private TextView name;
+    private TextView description;
+    private TextView issue;
 
     private RepoDetailsContract.Presenter presenter;
 
@@ -41,8 +33,14 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_details);
-        ButterKnife.bind(this);
+        bind();
         initPresenter();
+    }
+
+    private void bind(){
+        name = findViewById(R.id.repo_name);
+        description = findViewById(R.id.repo_description);
+        issue = findViewById(R.id.repo_issue);
     }
 
     @Override

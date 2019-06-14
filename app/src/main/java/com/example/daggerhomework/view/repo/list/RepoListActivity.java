@@ -1,8 +1,9 @@
 package com.example.daggerhomework.view.repo.list;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.daggerhomework.R;
@@ -14,16 +15,12 @@ import com.example.daggerhomework.view.user.UserDetailsActivity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class RepoListActivity extends AppCompatActivity
         implements RepoListContract.View, RepoListAdapter.Listener {
 
     private RepoListContract.Presenter presenter;
 
-    @BindView(R.id.feed_list)
-    RecyclerView feedList;
+    private RecyclerView feedList;
 
     private RepoListAdapter adapter = new RepoListAdapter(this);
 
@@ -31,7 +28,8 @@ public class RepoListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
-        ButterKnife.bind(this);
+
+        feedList = findViewById(R.id.feed_list);
         feedList.setAdapter(adapter);
         initPresenter();
     }

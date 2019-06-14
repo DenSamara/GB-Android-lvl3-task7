@@ -19,7 +19,9 @@ public class ServiceGenerator {
                 .baseUrl("https://api.github.com")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(getClient()).build().create(serviceClass);
+                .client(getClient())
+                .build()
+                .create(serviceClass);
     }
 
     private OkHttpClient getClient() {

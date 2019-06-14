@@ -2,29 +2,25 @@ package com.example.daggerhomework.view.user;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.UserContract;
 import com.example.daggerhomework.model.data.UserModel;
 import com.example.daggerhomework.presenter.UserPresenter;
-import com.example.daggerhomework.view.GlideApp;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class UserDetailsActivity extends AppCompatActivity implements UserContract.View {
 
     private static final String USER_NAME = "extra_user_name";
 
-    @BindView(R.id.profile_name)
-    TextView name;
+    private TextView name;
 
-    @BindView(R.id.profile_image)
-    ImageView image;
+    private ImageView image;
 
     private UserContract.Presenter presenter;
 
@@ -38,8 +34,13 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
-        ButterKnife.bind(this);
+        bind();
         initPresenter();
+    }
+
+    private void bind(){
+        name = findViewById(R.id.profile_name);
+        image = findViewById(R.id.profile_image);
     }
 
     @Override
@@ -60,8 +61,7 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     @Override
     public void showUser(UserModel user) {
         name.setText(user.login);
-        GlideApp
-                .with(this)
+        Glide.with(this)
                 .load(user.imageUrl)
                 .into(image);
     }
