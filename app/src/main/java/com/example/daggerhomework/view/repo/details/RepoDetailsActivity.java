@@ -2,36 +2,40 @@ package com.example.daggerhomework.view.repo.details;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.daggerhomework.GlobalProc;
+import com.example.daggerhomework.MyApp;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoDetailsContract;
-import com.example.daggerhomework.contracts.UserContract;
 import com.example.daggerhomework.model.data.RepoDetailsModel;
+import com.example.daggerhomework.model.net.Endpoints;
+import com.example.daggerhomework.model.net.ServiceGenerator;
+import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
-import com.example.daggerhomework.presenter.UserPresenter;
-import com.example.daggerhomework.view.user.UserDetailsActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import javax.inject.Inject;
 
 public class RepoDetailsActivity extends AppCompatActivity implements RepoDetailsContract.View {
 
     private static final String USER_NAME = "extra_user_name";
     private static final String REPO_NAME = "extra_repo_name";
 
-    @BindView(R.id.repo_name)
-    TextView name;
-
-    @BindView(R.id.repo_description)
-    TextView description;
-
-    @BindView(R.id.repo_issue)
-    TextView issue;
+    private TextView name;
+    private TextView description;
+    private TextView issue;
 
     private RepoDetailsContract.Presenter presenter;
+
+    @Inject
+    RepoRepository repoRepository;
+
+    @Inject
+    ConnectivityManager connectivityManager;
 
     public static Intent getIntentInstantce(Context context, String user, String repo) {
         Intent intent = new Intent(context, RepoDetailsActivity.class);
@@ -44,8 +48,17 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_details);
-        ButterKnife.bind(this);
+
+        MyApp.getComponent().injectToRepoDetailsActivity(this);
+
+        bind();
         initPresenter();
+    }
+
+    private void bind(){
+        name = findViewById(R.id.repo_name);
+        description = findViewById(R.id.repo_description);
+        issue = findViewById(R.id.repo_issue);
     }
 
     @Override
@@ -71,11 +84,15 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     }
 
     private void initPresenter(){
-        presenter = new RepoDetailsPresenter(this);
+        presenter = new RepoDetailsPresenter(this, repoRepository);
         String user = getIntent().getStringExtra(USER_NAME);
         String repo = getIntent().getStringExtra(REPO_NAME);
         presenter.setUser(user);
         presenter.setRepo(repo);
-        presenter.loadData();
+
+        if (GlobalProc.isConnected(connectivityManager))
+            presenter.loadData();
+        else
+            GlobalProc.toast(this, R.string.err_connect_to_internet);
     }
 }

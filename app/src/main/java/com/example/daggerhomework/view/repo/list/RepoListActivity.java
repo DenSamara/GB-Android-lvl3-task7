@@ -1,46 +1,103 @@
 package com.example.daggerhomework.view.repo.list;
 
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.daggerhomework.GlobalProc;
+import com.example.daggerhomework.MyApp;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoListContract;
-import com.example.daggerhomework.model.data.RepoDetailsModel;
 import com.example.daggerhomework.model.data.RepoModel;
+import com.example.daggerhomework.model.data.UserModel;
+import com.example.daggerhomework.model.net.Endpoints;
+import com.example.daggerhomework.model.net.ServiceGenerator;
+import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoListPresenter;
+import com.example.daggerhomework.view.ItemClickSupport;
 import com.example.daggerhomework.view.repo.details.RepoDetailsActivity;
 import com.example.daggerhomework.view.user.UserDetailsActivity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import javax.inject.Inject;
+
 
 public class RepoListActivity extends AppCompatActivity
-        implements RepoListContract.View, RepoListAdapter.Listener {
+        implements RepoListContract.View {
 
     private RepoListContract.Presenter presenter;
 
-    @BindView(R.id.feed_list)
-    RecyclerView feedList;
+    private RecyclerView feedList;
 
-    private RepoListAdapter adapter = new RepoListAdapter(this);
+    private RepoListAdapter adapter = new RepoListAdapter();
+
+    @Inject
+    RepoRepository repoRepository;
+
+    @Inject
+    ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
-        ButterKnife.bind(this);
+
+        MyApp.getComponent().injectToRepoListActivity(this);
+
+        feedList = findViewById(R.id.feed_list);
         feedList.setAdapter(adapter);
+        ItemClickSupport.addTo(feedList).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+                builder.setTitle(R.string.select_details);
+                builder.setItems(R.array.details_type, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0: {
+                                RepoModel data = adapter.getItem(position);
+                                UserModel owner = null;
+                                if (data != null)
+                                    owner = data.owner;
+                                if (owner != null)
+                                    startActivity(UserDetailsActivity.getIntentInstantce(getBaseContext(), owner.login));
+                                break;
+                            }
+                            case 1: {
+                                RepoModel data = adapter.getItem(position);
+                                UserModel owner = null;
+                                if (data != null)
+                                    owner = data.owner;
+                                if (owner != null)
+                                    startActivity(RepoDetailsActivity.getIntentInstantce(getBaseContext(), owner.login, data.name));
+
+                            }
+                        }
+                    }
+                });
+                builder.create().show();
+            }
+        });
         initPresenter();
     }
 
     private void initPresenter() {
-        presenter = new RepoListPresenter(this);
-        presenter.loadData();
+        presenter = new RepoListPresenter(this, repoRepository);
+        if (GlobalProc.isConnected(connectivityManager))
+            presenter.loadData();
+        else
+            GlobalProc.toast(this, R.string.err_connect_to_internet);
     }
+
+
 
     @Override
     public void startLoading() {
@@ -62,21 +119,4 @@ public class RepoListActivity extends AppCompatActivity
         adapter.setItems(list);
     }
 
-    @Override
-    public void onRepoClick(String user, String repo) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.select_details)
-                .setItems(R.array.details_type, (dialog, which) -> {
-                    switch (which){
-                        case 0: {
-                            startActivity(UserDetailsActivity.getIntentInstantce(this, user));
-                            break;
-                        }
-                        case 1: {
-                            startActivity(RepoDetailsActivity.getIntentInstantce(this, user, repo));
-                        }
-                    }
-                });
-        builder.create().show();
-    }
 }

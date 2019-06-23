@@ -11,7 +11,7 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface Endpoins {
+public interface Endpoints {
 
     @GET("/repositories")
     Flowable<List<RepoModel>> getReps();

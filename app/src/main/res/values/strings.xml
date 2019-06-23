@@ -4,6 +4,8 @@
 
     <string name="issue_count">Issue count = %1$d</string>
 
+    <string name="err_connect_to_internet">Отсутствует подключение к интернет</string>
+
     <string-array name="details_type">
         <item>User</item>
         <item>Repo</item>

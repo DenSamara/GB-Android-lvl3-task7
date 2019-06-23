@@ -2,9 +2,7 @@ package com.example.daggerhomework.model.repository;
 
 import com.example.daggerhomework.model.data.RepoDetailsModel;
 import com.example.daggerhomework.model.data.RepoModel;
-import com.example.daggerhomework.model.data.UserModel;
-import com.example.daggerhomework.model.net.Endpoins;
-import com.example.daggerhomework.model.net.ServiceGenerator;
+import com.example.daggerhomework.model.net.Endpoints;
 
 import java.util.List;
 
@@ -13,20 +11,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class RepoRepository {
-    private Endpoins endpoins;
+    private Endpoints endpoints;
 
-    public RepoRepository(){
-        endpoins = new ServiceGenerator().createService(Endpoins.class);
+    public RepoRepository(Endpoints endpoints){
+        this.endpoints = endpoints;
     }
 
     public Flowable<List<RepoModel>> getReps(){
-        return endpoins.getReps()
+        return endpoints.getReps()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
 
     public Flowable<RepoDetailsModel> getRepoByNameAndUser(String user, String repo){
-        return endpoins.getRepoDetails(user, repo)
+        return endpoints.getRepoDetails(user, repo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
