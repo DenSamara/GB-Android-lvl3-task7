@@ -13,11 +13,10 @@ import java.util.List;
 public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
 
     private ArrayList<RepoModel> data = new ArrayList<>();
-    private Listener listener;
+    private RepoViewHolder holder;
 
-    RepoListAdapter(Listener listener){
+    RepoListAdapter(){
         super();
-        this.listener = listener;
     }
 
     @NonNull
@@ -28,7 +27,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RepoViewHolder holder, int position) {
-        holder.bind(data.get(position), listener);
+        holder.bind(data.get(position));
+        this.holder = holder;
     }
 
     @Override
@@ -48,7 +48,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
         notifyItemRangeInserted(oldIndex, list.size());
     }
 
-    public interface Listener {
-        void onRepoClick(String user, String repo);
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 }

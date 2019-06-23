@@ -14,9 +14,9 @@ public class RepoListPresenter implements RepoListContract.Presenter, Subscriber
     private RepoRepository repository;
     private RepoListContract.View view;
 
-    public RepoListPresenter(RepoListContract.View view) {
+    public RepoListPresenter(RepoListContract.View view, RepoRepository repository) {
         this.view = view;
-        repository = new RepoRepository();
+        this.repository = repository;
     }
 
     @Override

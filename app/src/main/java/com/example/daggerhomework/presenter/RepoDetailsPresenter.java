@@ -14,9 +14,11 @@ public class RepoDetailsPresenter implements RepoDetailsContract.Presenter, Subs
     private String user;
     private String repo;
 
-    public RepoDetailsPresenter(RepoDetailsContract.View view) {
+    //TODO inject RepoRepository
+
+    public RepoDetailsPresenter(RepoDetailsContract.View view, RepoRepository repository) {
         this.view = view;
-        repository = new RepoRepository();
+        this.repository = repository;
     }
 
     @Override

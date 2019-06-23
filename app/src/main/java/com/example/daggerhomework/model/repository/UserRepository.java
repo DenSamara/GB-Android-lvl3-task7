@@ -12,8 +12,8 @@ public class UserRepository {
 
     private Endpoins endpoins;
 
-    public UserRepository(){
-        endpoins = new ServiceGenerator().createService(Endpoins.class);
+    public UserRepository(Endpoins endpoins){
+        this.endpoins = endpoins;//new ServiceGenerator().createService(Endpoins.class);
     }
 
     public Flowable<UserModel> getUser(String user){

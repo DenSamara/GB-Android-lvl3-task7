@@ -15,8 +15,8 @@ import io.reactivex.schedulers.Schedulers;
 public class RepoRepository {
     private Endpoins endpoins;
 
-    public RepoRepository(){
-        endpoins = new ServiceGenerator().createService(Endpoins.class);
+    public RepoRepository(Endpoins endpoins){
+        this.endpoins = endpoins;//new ServiceGenerator().createService(Endpoins.class);
     }
 
     public Flowable<List<RepoModel>> getReps(){

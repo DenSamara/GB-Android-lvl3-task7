@@ -16,23 +16,16 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     private TextView description;
 
     private RepoModel model;
-    RepoListAdapter.Listener listener;
 
     private RepoViewHolder(View view) {
         super(view);
         root = view;
-        root.setOnClickListener(view1 -> {
-                    if (listener != null) {
-                        listener.onRepoClick(model.owner.login, model.name);
-                    }
-                }
-        );
+
         name = root.findViewById(R.id.name);
         description = root.findViewById(R.id.description);
     }
 
-    public void bind(RepoModel model, RepoListAdapter.Listener listener) {
-        this.listener = listener;
+    public void bind(RepoModel model) {
         this.model = model;
         name.setText(model.name);
         description.setText(model.description);

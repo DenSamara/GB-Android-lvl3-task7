@@ -14,5 +14,7 @@ public interface RepoDetailsContract {
         void setUser(String user);
         void setRepo(String repo);
         void loadData();
+        //Метод для подключения к активности (при поворте экрана)
+        void attach();
     }
 }

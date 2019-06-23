@@ -13,9 +13,11 @@ public class UserPresenter implements UserContract.Presenter, Subscriber<UserMod
     private UserContract.View view;
     private String user;
 
-    public UserPresenter(UserContract.View view) {
+    //TODO inject UserRepository
+
+    public UserPresenter(UserContract.View view, UserRepository repository) {
         this.view = view;
-        repository = new UserRepository();
+        this.repository = repository;
     }
 
     @Override

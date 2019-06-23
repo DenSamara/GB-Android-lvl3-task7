@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoDetailsContract;
 import com.example.daggerhomework.model.data.RepoDetailsModel;
+import com.example.daggerhomework.model.net.Endpoins;
+import com.example.daggerhomework.model.net.ServiceGenerator;
+import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
 
 public class RepoDetailsActivity extends AppCompatActivity implements RepoDetailsContract.View {
@@ -66,7 +69,9 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     }
 
     private void initPresenter(){
-        presenter = new RepoDetailsPresenter(this);
+        //Репозиторий в активити не особо нужен. TODO передать через сеттер в презентер
+        //Но тогда мы можем забыть обязательный параметр.
+        presenter = new RepoDetailsPresenter(this, new RepoRepository(Endpoins));
         String user = getIntent().getStringExtra(USER_NAME);
         String repo = getIntent().getStringExtra(REPO_NAME);
         presenter.setUser(user);
