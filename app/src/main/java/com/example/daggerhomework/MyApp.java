@@ -11,7 +11,8 @@ public class MyApp extends Application {
 
         component = DaggerAppComponent
                 .builder()
-                .daggerNetModule(new DaggerNetModule(this))
+                .appModule(new AppModule(this))
+                .daggerNetModule(new DaggerNetModule())
                 .build();
     }
 

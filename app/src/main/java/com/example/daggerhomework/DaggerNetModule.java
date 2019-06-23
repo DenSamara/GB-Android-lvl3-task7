@@ -16,10 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DaggerNetModule {
-    private Context context;
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-
-    public DaggerNetModule(Context context) {this.context = context;}
 
     @Provides
     Retrofit getRetrofit(){
@@ -35,7 +32,7 @@ public class DaggerNetModule {
     }
 
     @Provides
-    ConnectivityManager getConnectivityManager() {
+    ConnectivityManager getConnectivityManager(Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
