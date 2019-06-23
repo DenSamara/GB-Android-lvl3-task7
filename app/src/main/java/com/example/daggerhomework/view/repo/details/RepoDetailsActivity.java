@@ -3,9 +3,13 @@ package com.example.daggerhomework.view.repo.details;
 import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.daggerhomework.GlobalProc;
+import com.example.daggerhomework.MyApp;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoDetailsContract;
 import com.example.daggerhomework.model.data.RepoDetailsModel;
@@ -13,6 +17,8 @@ import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
+
+import javax.inject.Inject;
 
 public class RepoDetailsActivity extends AppCompatActivity implements RepoDetailsContract.View {
 
@@ -25,6 +31,12 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
 
     private RepoDetailsContract.Presenter presenter;
 
+    @Inject
+    Endpoints endpoints;
+
+    @Inject
+    ConnectivityManager connectivityManager;
+
     public static Intent getIntentInstantce(Context context, String user, String repo) {
         Intent intent = new Intent(context, RepoDetailsActivity.class);
         intent.putExtra(USER_NAME, user);
@@ -36,6 +48,9 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_details);
+
+        MyApp.getComponent().injectToRepoDetailsActivity(this);
+
         bind();
         initPresenter();
     }
@@ -71,11 +86,15 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     private void initPresenter(){
         //Репозиторий в активити не особо нужен. TODO передать через сеттер в презентер
         //Но тогда мы можем забыть обязательный параметр.
-        presenter = new RepoDetailsPresenter(this, new RepoRepository(new ServiceGenerator().createService(Endpoints.class)));
+        presenter = new RepoDetailsPresenter(this, new RepoRepository(endpoints));
         String user = getIntent().getStringExtra(USER_NAME);
         String repo = getIntent().getStringExtra(REPO_NAME);
         presenter.setUser(user);
         presenter.setRepo(repo);
-        presenter.loadData();
+
+        if (GlobalProc.isConnected(connectivityManager))
+            presenter.loadData();
+        else
+            GlobalProc.toast(this, R.string.err_connect_to_internet);
     }
 }

@@ -2,6 +2,7 @@ package com.example.daggerhomework.view.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.daggerhomework.GlobalProc;
+import com.example.daggerhomework.MyApp;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.UserContract;
 import com.example.daggerhomework.model.data.UserModel;
@@ -16,6 +19,8 @@ import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.UserRepository;
 import com.example.daggerhomework.presenter.UserPresenter;
+
+import javax.inject.Inject;
 
 public class UserDetailsActivity extends AppCompatActivity implements UserContract.View {
 
@@ -27,6 +32,12 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
 
     private UserContract.Presenter presenter;
 
+    @Inject
+    Endpoints endpoints;
+
+    @Inject
+    ConnectivityManager connectivityManager;
+
     public static Intent getIntentInstantce(Context context, String user) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
         intent.putExtra(USER_NAME, user);
@@ -37,6 +48,9 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
+
+        MyApp.getComponent().injectToUserDetailsActivity(this);
+
         bind();
         initPresenter();
     }
@@ -70,9 +84,14 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     }
 
     private void initPresenter() {
-        presenter = new UserPresenter(this, new UserRepository(new ServiceGenerator().createService(Endpoints.class)));
+        presenter = new UserPresenter(this, new UserRepository(endpoints));
         String user = getIntent().getStringExtra(USER_NAME);
         presenter.setUser(user);
-        presenter.loadData();
+
+
+        if (GlobalProc.isConnected(connectivityManager))
+            presenter.loadData();
+        else
+            GlobalProc.toast(this, R.string.err_connect_to_internet);
     }
 }

@@ -2,6 +2,7 @@ package com.example.daggerhomework.view.repo.list;
 
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +10,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.daggerhomework.GlobalProc;
+import com.example.daggerhomework.MyApp;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoListContract;
 import com.example.daggerhomework.model.data.RepoModel;
@@ -45,6 +48,8 @@ public class RepoListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
+
+        MyApp.getComponent().injectToRepoListActivity(this);
 
         feedList = findViewById(R.id.feed_list);
         feedList.setAdapter(adapter);
@@ -85,9 +90,14 @@ public class RepoListActivity extends AppCompatActivity
     }
 
     private void initPresenter() {
-        presenter = new RepoListPresenter(this, new RepoRepository(new ServiceGenerator().createService(Endpoints.class)));
-        presenter.loadData();
+        presenter = new RepoListPresenter(this, new RepoRepository(endpoints));
+        if (GlobalProc.isConnected(connectivityManager))
+            presenter.loadData();
+        else
+            GlobalProc.toast(this, R.string.err_connect_to_internet);
     }
+
+
 
     @Override
     public void startLoading() {
