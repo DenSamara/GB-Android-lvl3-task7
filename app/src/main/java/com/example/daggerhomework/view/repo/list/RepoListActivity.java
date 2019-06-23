@@ -39,7 +39,7 @@ public class RepoListActivity extends AppCompatActivity
     private RepoListAdapter adapter = new RepoListAdapter();
 
     @Inject
-    Endpoints endpoints;
+    RepoRepository repoRepository;
 
     @Inject
     ConnectivityManager connectivityManager;
@@ -90,7 +90,7 @@ public class RepoListActivity extends AppCompatActivity
     }
 
     private void initPresenter() {
-        presenter = new RepoListPresenter(this, new RepoRepository(endpoints));
+        presenter = new RepoListPresenter(this, repoRepository);
         if (GlobalProc.isConnected(connectivityManager))
             presenter.loadData();
         else

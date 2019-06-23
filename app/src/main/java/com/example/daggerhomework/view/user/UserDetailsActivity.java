@@ -33,10 +33,10 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     private UserContract.Presenter presenter;
 
     @Inject
-    Endpoints endpoints;
+    ConnectivityManager connectivityManager;
 
     @Inject
-    ConnectivityManager connectivityManager;
+    UserRepository userRepository;
 
     public static Intent getIntentInstantce(Context context, String user) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
@@ -84,7 +84,7 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     }
 
     private void initPresenter() {
-        presenter = new UserPresenter(this, new UserRepository(endpoints));
+        presenter = new UserPresenter(this, userRepository);
         String user = getIntent().getStringExtra(USER_NAME);
         presenter.setUser(user);
 

@@ -32,7 +32,7 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     private RepoDetailsContract.Presenter presenter;
 
     @Inject
-    Endpoints endpoints;
+    RepoRepository repoRepository;
 
     @Inject
     ConnectivityManager connectivityManager;
@@ -84,9 +84,7 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     }
 
     private void initPresenter(){
-        //Репозиторий в активити не особо нужен. TODO передать через сеттер в презентер
-        //Но тогда мы можем забыть обязательный параметр.
-        presenter = new RepoDetailsPresenter(this, new RepoRepository(endpoints));
+        presenter = new RepoDetailsPresenter(this, repoRepository);
         String user = getIntent().getStringExtra(USER_NAME);
         String repo = getIntent().getStringExtra(REPO_NAME);
         presenter.setUser(user);

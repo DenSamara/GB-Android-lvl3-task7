@@ -12,7 +12,7 @@ public class UserRepository {
     private Endpoints endpoints;
 
     public UserRepository(Endpoints endpoints){
-        this.endpoints = endpoints;//new ServiceGenerator().createService(Endpoints.class);
+        this.endpoints = endpoints;
     }
 
     public Flowable<UserModel> getUser(String user){

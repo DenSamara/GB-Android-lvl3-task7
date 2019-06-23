@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 import com.example.daggerhomework.model.net.Endpoints;
+import com.example.daggerhomework.model.repository.RepoRepository;
+import com.example.daggerhomework.model.repository.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,6 +37,16 @@ public class DaggerNetModule {
     @Provides
     ConnectivityManager getConnectivityManager() {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
+
+    @Provides
+    UserRepository getUserRepo(){
+        return new UserRepository(getUserEndpoints(getRetrofit()));
+    }
+
+    @Provides
+    RepoRepository getRepoRepo(){
+        return new RepoRepository(getUserEndpoints(getRetrofit()));
     }
 
     private String getUrl(){
