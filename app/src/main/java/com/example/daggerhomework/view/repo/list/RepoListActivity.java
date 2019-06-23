@@ -1,6 +1,7 @@
 package com.example.daggerhomework.view.repo.list;
 
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,7 +13,7 @@ import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.RepoListContract;
 import com.example.daggerhomework.model.data.RepoModel;
 import com.example.daggerhomework.model.data.UserModel;
-import com.example.daggerhomework.model.net.Endpoins;
+import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoListPresenter;
@@ -22,6 +23,9 @@ import com.example.daggerhomework.view.user.UserDetailsActivity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+
 public class RepoListActivity extends AppCompatActivity
         implements RepoListContract.View {
 
@@ -30,6 +34,12 @@ public class RepoListActivity extends AppCompatActivity
     private RecyclerView feedList;
 
     private RepoListAdapter adapter = new RepoListAdapter();
+
+    @Inject
+    Endpoints endpoints;
+
+    @Inject
+    ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +85,7 @@ public class RepoListActivity extends AppCompatActivity
     }
 
     private void initPresenter() {
-        presenter = new RepoListPresenter(this, new RepoRepository(new ServiceGenerator().createService(Endpoins.class)));
+        presenter = new RepoListPresenter(this, new RepoRepository(new ServiceGenerator().createService(Endpoints.class)));
         presenter.loadData();
     }
 

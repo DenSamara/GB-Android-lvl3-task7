@@ -1,8 +1,9 @@
 package com.example.daggerhomework;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
-import com.example.daggerhomework.model.net.Endpoins;
+import com.example.daggerhomework.model.net.Endpoints;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,8 +28,13 @@ public class DaggerNetModule {
     }
 
     @Provides
-    Endpoins getUserEndpoints(Retrofit retrofit){
-        return retrofit.create(Endpoins.class);
+    Endpoints getUserEndpoints(Retrofit retrofit){
+        return retrofit.create(Endpoints.class);
+    }
+
+    @Provides
+    ConnectivityManager getConnectivityManager() {
+        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     private String getUrl(){
