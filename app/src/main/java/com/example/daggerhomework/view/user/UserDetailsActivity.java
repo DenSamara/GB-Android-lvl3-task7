@@ -19,10 +19,11 @@ import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.UserRepository;
 import com.example.daggerhomework.presenter.UserPresenter;
+import com.example.daggerhomework.view.BaseActivity;
 
 import javax.inject.Inject;
 
-public class UserDetailsActivity extends AppCompatActivity implements UserContract.View {
+public class UserDetailsActivity extends BaseActivity implements UserContract.View {
 
     private static final String USER_NAME = "extra_user_name";
 
@@ -31,12 +32,6 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     private ImageView image;
 
     private UserContract.Presenter presenter;
-
-    @Inject
-    ConnectivityManager connectivityManager;
-
-    @Inject
-    UserRepository userRepository;
 
     public static Intent getIntentInstantce(Context context, String user) {
         Intent intent = new Intent(context, UserDetailsActivity.class);
@@ -49,7 +44,7 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
 
-        MyApp.getComponent().injectToUserDetailsActivity(this);
+        MyApp.getComponent().injectToBaseActivity(this);
 
         bind();
         initPresenter();

@@ -20,6 +20,7 @@ import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoListPresenter;
+import com.example.daggerhomework.view.BaseActivity;
 import com.example.daggerhomework.view.ItemClickSupport;
 import com.example.daggerhomework.view.repo.details.RepoDetailsActivity;
 import com.example.daggerhomework.view.user.UserDetailsActivity;
@@ -29,7 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class RepoListActivity extends AppCompatActivity
+public class RepoListActivity extends BaseActivity
         implements RepoListContract.View {
 
     private RepoListContract.Presenter presenter;
@@ -38,18 +39,12 @@ public class RepoListActivity extends AppCompatActivity
 
     private RepoListAdapter adapter = new RepoListAdapter();
 
-    @Inject
-    RepoRepository repoRepository;
-
-    @Inject
-    ConnectivityManager connectivityManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
 
-        MyApp.getComponent().injectToRepoListActivity(this);
+        MyApp.getComponent().injectToBaseActivity(this);
 
         feedList = findViewById(R.id.feed_list);
         feedList.setAdapter(adapter);

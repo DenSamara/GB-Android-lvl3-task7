@@ -17,10 +17,11 @@ import com.example.daggerhomework.model.net.Endpoints;
 import com.example.daggerhomework.model.net.ServiceGenerator;
 import com.example.daggerhomework.model.repository.RepoRepository;
 import com.example.daggerhomework.presenter.RepoDetailsPresenter;
+import com.example.daggerhomework.view.BaseActivity;
 
 import javax.inject.Inject;
 
-public class RepoDetailsActivity extends AppCompatActivity implements RepoDetailsContract.View {
+public class RepoDetailsActivity extends BaseActivity implements RepoDetailsContract.View {
 
     private static final String USER_NAME = "extra_user_name";
     private static final String REPO_NAME = "extra_repo_name";
@@ -30,12 +31,6 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     private TextView issue;
 
     private RepoDetailsContract.Presenter presenter;
-
-    @Inject
-    RepoRepository repoRepository;
-
-    @Inject
-    ConnectivityManager connectivityManager;
 
     public static Intent getIntentInstantce(Context context, String user, String repo) {
         Intent intent = new Intent(context, RepoDetailsActivity.class);
@@ -49,7 +44,7 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_details);
 
-        MyApp.getComponent().injectToRepoDetailsActivity(this);
+        MyApp.getComponent().injectToBaseActivity(this);
 
         bind();
         initPresenter();
