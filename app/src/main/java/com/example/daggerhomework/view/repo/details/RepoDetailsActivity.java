@@ -71,7 +71,7 @@ public class RepoDetailsActivity extends AppCompatActivity implements RepoDetail
     private void initPresenter(){
         //Репозиторий в активити не особо нужен. TODO передать через сеттер в презентер
         //Но тогда мы можем забыть обязательный параметр.
-        presenter = new RepoDetailsPresenter(this, new RepoRepository(Endpoins));
+        presenter = new RepoDetailsPresenter(this, new RepoRepository(new ServiceGenerator().createService(Endpoins.class)));
         String user = getIntent().getStringExtra(USER_NAME);
         String repo = getIntent().getStringExtra(REPO_NAME);
         presenter.setUser(user);

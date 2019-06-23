@@ -12,6 +12,9 @@ import com.bumptech.glide.Glide;
 import com.example.daggerhomework.R;
 import com.example.daggerhomework.contracts.UserContract;
 import com.example.daggerhomework.model.data.UserModel;
+import com.example.daggerhomework.model.net.Endpoins;
+import com.example.daggerhomework.model.net.ServiceGenerator;
+import com.example.daggerhomework.model.repository.UserRepository;
 import com.example.daggerhomework.presenter.UserPresenter;
 
 public class UserDetailsActivity extends AppCompatActivity implements UserContract.View {
@@ -67,7 +70,7 @@ public class UserDetailsActivity extends AppCompatActivity implements UserContra
     }
 
     private void initPresenter() {
-        presenter = new UserPresenter(this);
+        presenter = new UserPresenter(this, new UserRepository(new ServiceGenerator().createService(Endpoins.class)));
         String user = getIntent().getStringExtra(USER_NAME);
         presenter.setUser(user);
         presenter.loadData();

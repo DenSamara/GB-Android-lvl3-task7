@@ -48,6 +48,11 @@ public class RepoDetailsPresenter implements RepoDetailsContract.Presenter, Subs
     }
 
     @Override
+    public void attach() {
+
+    }
+
+    @Override
     public void setUser(String user) {
         this.user = user;
     }

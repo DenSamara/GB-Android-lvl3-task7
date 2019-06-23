@@ -48,6 +48,11 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
         notifyItemRangeInserted(oldIndex, list.size());
     }
 
+    public RepoModel getItem(int position){
+        //TODO нужна проверка на выход за границы массива
+        return data != null ? data.get(position) : null;
+    }
+
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);

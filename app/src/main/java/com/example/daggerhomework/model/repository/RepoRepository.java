@@ -16,7 +16,7 @@ public class RepoRepository {
     private Endpoins endpoins;
 
     public RepoRepository(Endpoins endpoins){
-        this.endpoins = endpoins;//new ServiceGenerator().createService(Endpoins.class);
+        this.endpoins = endpoins;
     }
 
     public Flowable<List<RepoModel>> getReps(){
